@@ -29,9 +29,9 @@ var i = 0,
  *
  * @see http://stackoverflow.com/questions/1527803/generating-random-numbers-in-javascript-in-a-specific-range
  * 
- * @param  {[type]} min [description]
- * @param  {[type]} max [description]
- * @return {[type]}     [description]
+ * @param  {number} min
+ * @param  {number} max
+ * @return {number}
  */
 function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -40,14 +40,15 @@ function getRandomInt(min, max) {
 /**
  * [getColByXPos description]
  * 
- * @param  {[type]} xPos [description]
- * @return {[type]}      [description]
+ * @param  {number} xPos
+ * @return {number}
  */
 function getColByXPos(xPos) {
   return Math.floor(xPos / BLOCK_WIDTH) + 1;
 }
 
-/* Game Position class for returning
+/**
+ * Game Position class for returning
  * position object (in 2d)
  */
 function getGameRenderPosition(objType, objCol, objRow, offsetX, offsetY) {
@@ -64,14 +65,6 @@ function getBlockRenderPosition(col, row) {
   return getGameRenderPosition('block', col, row, 0, 20);
 }
 
-/**
- * [getGemRenderPosition description]
- * unused
- * 
- * @param  {[type]} col [description]
- * @param  {[type]} row [description]
- * @return {[type]}     [description]
- */
 function getGemRenderPosition(col, row) {
   return getGameRenderPosition('gem', col, row, 0, 0);
 }
@@ -112,7 +105,6 @@ function getStartedPlayerRenderPosition() {
   #GAME OBJ - GEM
   ================================================================*/
 
-// Gem
 var Gem = function() {
   this.sprite = 'images/gem-blue.png';
   this.pos = getRandomGemRenderPosition();
