@@ -11,3 +11,6 @@ Use arrows to move the character - reach the water, get the gem and avoid the bu
 - [ ] Refactor
 - [ ] Character select screen
 - [ ] Implement [Kibo](https://github.com/marquete/kibo) for handling keyboard events
+- [ ] Add DocBlock to every functions
+- [ ] Pause feature
+- [ ] Reset / New Game feature
