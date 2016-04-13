@@ -1,0 +1,41 @@
+{
+  "tasks": {
+    "js": {
+      "src": "js/*.js",
+      "browserSyncOpt": {
+        "once": true
+      }
+    },
+
+    "sass": {
+      "src": "scss/*.scss",
+      "dest": "css",
+      "opt": {
+        "sourceComments": false,
+        "outputStyle": "expanded"
+      },
+      "browserSyncOpt": {
+        "once": true
+      }
+    },
+
+    "html": {
+      "src": "*.html",
+      "browserSyncOpt": {
+        "once": true
+      }
+    },
+
+    "serve": {
+      "watch": {
+        "js": "js/*.js",
+        "sass": "scss/*.scss",
+        "html": "*.html"
+      },
+      "browserSyncInit": {
+        "server": "",
+        "open": true
+      }
+    }
+  }
+}
