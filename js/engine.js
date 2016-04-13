@@ -25,8 +25,8 @@ var Engine = (function(global) {
     ctx = canvas.getContext('2d'),
     lastTime;
 
-  canvas.width = 505;
-  canvas.height = 606;
+  canvas.width = CANVAS_WIDHT;
+  canvas.height = CANVAS_HEIGHT;
   doc.body.appendChild(canvas);
 
   /* This function serves as the kickoff point for the game loop itself
@@ -91,10 +91,9 @@ var Engine = (function(global) {
    * render methods.
    */
   function updateEntities(dt) {
-    allEnemies.forEach(function(enemy) {
+    enemies.forEach(function(enemy) {
       enemy.update(dt);
     });
-    
     player.update();
   }
 
@@ -105,9 +104,16 @@ var Engine = (function(global) {
    * they are just drawing the entire screen over and over.
    */
   function render() {
+    renderBackground();
+    renderEntities();
+    renderGameMeta();
+  }
+
+  function renderBackground() {
     /* This array holds the relative URL to the image used
      * for that particular row of the game level.
      */
+    var row, col;
     var rowImages = [
       'images/water-block.png', // Top row is water
       'images/stone-block.png', // Row 1 of 3 of stone
@@ -115,17 +121,14 @@ var Engine = (function(global) {
       'images/stone-block.png', // Row 3 of 3 of stone
       'images/grass-block.png', // Row 1 of 2 of grass
       'images/grass-block.png'  // Row 2 of 2 of grass
-    ],
-    numRows = 6,
-    numCols = 5,
-    row, col;
+    ];
 
     /* Loop through the number of rows and columns we've defined above
      * and, using the rowImages array, draw the correct image for that
      * portion of the "grid"
      */
-    for (row = 0; row < numRows; row++) {
-      for (col = 0; col < numCols; col++) {
+    for (row = 0; row < NUM_ROWS; row++) {
+      for (col = 0; col < NUM_COLS; col++) {
         /* The drawImage function of the canvas' context element
          * requires 3 parameters: the image to draw, the x coordinate
          * to start drawing and the y coordinate to start drawing.
@@ -133,11 +136,35 @@ var Engine = (function(global) {
          * so that we get the benefits of caching these images, since
          * we're using them over and over.
          */
-        ctx.drawImage(Resources.get(rowImages[row]), col * 101, row * 83);
+        var pos = getBlockRenderPosition(col, row);
+        ctx.drawImage(
+          Resources.get(rowImages[row]),
+          pos.x,
+          pos.y
+        );
       }
     }
+  }
+  
+  function renderMeta(str) {
+    ctx.clearRect(0, 0, CANVAS_WIDHT, 60);
 
-    renderEntities();
+    var posX = CANVAS_WIDHT / 2,
+      posY = 36;
+
+    ctx.fillStyle = '#f58df2';
+    ctx.font = '24px monospace';
+    ctx.textAlign = 'center';
+    ctx.fillText(str, posX, posY);
+  }
+  
+  /* Render meta
+   * - score
+   * - number of gems
+   */
+  function renderGameMeta() {
+    var text = 'Score: ' + score + ', Blue Gem: ' + nGems + ', Die: ' + nDies;
+    renderMeta(text);
   }
 
   /* This function is called by the render function and is called on each game
@@ -148,10 +175,10 @@ var Engine = (function(global) {
     /* Loop through all of the objects within the allEnemies array and call
      * the render function you have defined.
      */
-    allEnemies.forEach(function(enemy) {
+    enemies.forEach(function(enemy) {
       enemy.render();
     });
-
+    gem.render();
     player.render();
   }
 
@@ -168,11 +195,12 @@ var Engine = (function(global) {
    * all of these images are properly loaded our game will start.
    */
   Resources.load([
+    'images/char-boy.png',
+    'images/enemy-bug.png',
+    'images/gem-blue.png',
+    'images/grass-block.png',
     'images/stone-block.png',
     'images/water-block.png',
-    'images/grass-block.png',
-    'images/enemy-bug.png',
-    'images/char-boy.png'
   ]);
   Resources.onReady(init);
 
