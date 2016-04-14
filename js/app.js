@@ -158,17 +158,17 @@ Enemy.prototype.reset = function() {
 
 Enemy.prototype.getRenderPosition = function(row) {
   return getGameRenderPosition('enemy', 0, row, -BLOCK_WIDTH * 2, 0);
-}
+};
 
 Enemy.prototype.getRandomRenderPosition = function() {
   var row = getRandomInt(1, 3);
 
   return this.getRenderPosition(row);
-}
+};
 
 Enemy.prototype.getRandomSpeed = function() {
   return getRandomInt(100, 240);
-}
+};
 
 /*================================================================
   #GAME OBJ - PLAYER
@@ -191,14 +191,14 @@ Player.prototype.update = function() {
 
 Player.prototype.getRenderPosition = function(col, row) {
   return getGameRenderPosition('player', col, row, 0, 0);
-}
+};
 
 Player.prototype.getStartedRenderPosition = function() {
   var col = 2,
     row = 5;
 
   return this.getRenderPosition(col, row, 0, 0);
-}
+};
 
 Player.prototype.moveLeft = function() {
   this.pos.col--;
