@@ -61,45 +61,25 @@ function getGameRenderPosition(objType, objCol, objRow, offsetX, offsetY) {
   };
 }
 
-function getBlockRenderPosition(col, row) {
+/*================================================================
+  #GAME OBJ - BLOCK
+  ================================================================*/
+
+var Block = function(imagePath, col, row) {
+  this.sprite = imagePath;
+  this.pos = this.getRenderPosition(col, row);
+}
+
+Block.prototype.render = function() {
+  ctx.drawImage(Resources.get(this.sprite),
+    this.pos.x,
+    this.pos.y
+  );
+};
+
+Block.prototype.getRenderPosition = function(col, row) {
   return getGameRenderPosition('block', col, row, 0, 20);
-}
-
-function getGemRenderPosition(col, row) {
-  return getGameRenderPosition('gem', col, row, 0, 0);
-}
-
-function getRandomGemRenderPosition() {
-  var col = getRandomInt(0, 4),
-    row = getRandomInt(1, 3);
-
-  return getGemRenderPosition(col, row);
-}
-
-function getEnemyenderPosition(row) {
-  return getGameRenderPosition('enemy', 0, row, -BLOCK_WIDTH * 2, 0);
-}
-
-function getRandomEnemyRenderPosition() {
-  var row = getRandomInt(1, 3);
-
-  return getEnemyenderPosition(row);
-}
-
-function getRandomEnemySpeed() {
-  return getRandomInt(100, 240);
-}
-
-function getPlayerRenderPosition(col, row) {
-  return getGameRenderPosition('player', col, row, 0, 0);
-}
-
-function getStartedPlayerRenderPosition() {
-  var col = 2,
-    row = 5;
-
-  return getPlayerRenderPosition(col, row, 0, 0);
-}
+};
 
 /*================================================================
   #GAME OBJ - GEM
@@ -107,7 +87,7 @@ function getStartedPlayerRenderPosition() {
 
 var Gem = function() {
   this.sprite = 'images/gem-blue.png';
-  this.pos = getRandomGemRenderPosition();
+  this.pos = this.getRandomRenderPosition();
 };
 
 Gem.prototype.render = function() {
@@ -118,7 +98,18 @@ Gem.prototype.render = function() {
 };
 
 Gem.prototype.reset = function() {
-  this.pos = getRandomGemRenderPosition();
+  this.pos = this.getRandomRenderPosition();
+};
+
+Gem.prototype.getRenderPosition = function(col, row) {
+  return getGameRenderPosition('gem', col, row, 0, 0);
+};
+
+Gem.prototype.getRandomRenderPosition = function() {
+  var col = getRandomInt(0, 4),
+    row = getRandomInt(1, 3);
+
+  return this.getRenderPosition(col, row);
 };
 
 /*================================================================
@@ -133,8 +124,8 @@ var Enemy = function() {
   // The image/sprite for our enemies, this uses
   // a helper we've provided to easily load images
   this.sprite = 'images/enemy-bug.png';
-  this.pos = getRandomEnemyRenderPosition();
-  this.speed = getRandomEnemySpeed();
+  this.pos = this.getRandomRenderPosition();
+  this.speed = this.getRandomSpeed();
 };
 
 // Update the enemy's position, required method for game
@@ -160,9 +151,23 @@ Enemy.prototype.render = function() {
 };
 
 Enemy.prototype.reset = function() {
-  this.pos = getRandomEnemyRenderPosition();
-  this.speed = getRandomEnemySpeed();
+  this.pos = this.getRandomRenderPosition();
+  this.speed = this.getRandomSpeed();
 };
+
+Enemy.prototype.getRenderPosition = function(row) {
+  return getGameRenderPosition('enemy', 0, row, -BLOCK_WIDTH * 2, 0);
+}
+
+Enemy.prototype.getRandomRenderPosition = function() {
+  var row = getRandomInt(1, 3);
+
+  return this.getRenderPosition(row);
+}
+
+Enemy.prototype.getRandomSpeed = function() {
+  return getRandomInt(100, 240);
+}
 
 /*================================================================
   #GAME OBJ - PLAYER
@@ -173,7 +178,7 @@ Enemy.prototype.reset = function() {
 // a handleInput() method.
 var Player = function() {
   this.sprite = 'images/char-boy.png';
-  this.pos = getStartedPlayerRenderPosition();
+  this.pos = this.getStartedRenderPosition();
 };
 
 Player.prototype.update = function() {
@@ -187,6 +192,17 @@ Player.prototype.render = function() {
     this.pos.y
   );
 };
+
+Player.prototype.getRenderPosition = function(col, row) {
+  return getGameRenderPosition('player', col, row, 0, 0);
+}
+
+Player.prototype.getStartedRenderPosition = function() {
+  var col = 2,
+    row = 5;
+
+  return this.getRenderPosition(col, row, 0, 0);
+}
 
 Player.prototype.moveLeft = function() {
   this.pos.col--;
@@ -209,7 +225,7 @@ Player.prototype.moveDown = function() {
 };
 
 Player.prototype.reset = function() {
-  this.pos = getStartedPlayerRenderPosition();
+  this.pos = this.getStartedRenderPosition();
 };
 
 Player.prototype.handleInput = function(key) {

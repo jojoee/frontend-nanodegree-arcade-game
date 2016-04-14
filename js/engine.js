@@ -149,12 +149,9 @@ var Engine = (function(global) {
          * so that we get the benefits of caching these images, since
          * we're using them over and over.
          */
-        var pos = getBlockRenderPosition(col, row);
-        ctx.drawImage(
-          Resources.get(rowImages[row]),
-          pos.x,
-          pos.y
-        );
+        
+        var block = new Block(rowImages[row], col, row);
+        block.render();
       }
     }
   }
