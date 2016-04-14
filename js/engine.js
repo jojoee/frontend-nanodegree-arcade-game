@@ -121,26 +121,12 @@ var Engine = (function(global) {
 
   function renderBackground() {
     /**
-     * This array holds the relative URL to the image used
-     * for that particular row of the game level.
-     */
-    var row, col;
-    var rowImages = [
-      'images/water-block.png', // Top row is water
-      'images/stone-block.png', // Row 1 of 3 of stone
-      'images/stone-block.png', // Row 2 of 3 of stone
-      'images/stone-block.png', // Row 3 of 3 of stone
-      'images/grass-block.png', // Row 1 of 2 of grass
-      'images/grass-block.png'  // Row 2 of 2 of grass
-    ];
-
-    /**
      * Loop through the number of rows and columns we've defined above
      * and, using the rowImages array, draw the correct image for that
      * portion of the "grid"
      */
-    for (row = 0; row < NUM_ROWS; row++) {
-      for (col = 0; col < NUM_COLS; col++) {
+    for (i = 0; i < NUM_COLS; i++) {
+      for (j = 0; j < NUM_ROWS; j++) {
         /**
          * The drawImage function of the canvas' context element
          * requires 3 parameters: the image to draw, the x coordinate
@@ -149,9 +135,7 @@ var Engine = (function(global) {
          * so that we get the benefits of caching these images, since
          * we're using them over and over.
          */
-        
-        var block = new Block(rowImages[row], col, row);
-        block.render();
+        blocks[i][j].render();
       }
     }
   }

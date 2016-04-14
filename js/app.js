@@ -293,11 +293,46 @@ Player.prototype.handleInput = function(key) {
 // Place the player object in a variable called player
 var gem = new Gem();
 var player = new Player();
+var blocks = []; // 2d array
 var enemies = [];
-for (i = 0; i < MAX_NUM_ENEMIES; i++) {
-  var enemy = new Enemy();
-  enemies.push(enemy);
+
+function setupEnemy() {
+  for (i = 0; i < MAX_NUM_ENEMIES; i++) {
+    var enemy = new Enemy();
+    enemies.push(enemy);
+  }
 }
+
+function setupBackground() {
+  /**
+   * This array holds the relative URL to the image used
+   * for that particular row of the game level.
+   */
+  var rowImages = [
+    'images/water-block.png', // Top row is water
+    'images/stone-block.png', // Row 1 of 3 of stone
+    'images/stone-block.png', // Row 2 of 3 of stone
+    'images/stone-block.png', // Row 3 of 3 of stone
+    'images/grass-block.png', // Row 1 of 2 of grass
+    'images/grass-block.png'  // Row 2 of 2 of grass
+  ];
+
+  // prepare 2d array
+  // http://stackoverflow.com/questions/11345954/push-a-two-dimensional-array-with-javascript
+  for (i = 0; i < NUM_COLS; i++) {
+    blocks.push([]);
+  }
+
+  for (i = 0; i < NUM_COLS; i++) {
+    for (j = 0; j < NUM_ROWS; j++) {
+      var block = new Block(rowImages[j], i, j);
+      blocks[i].push(block);
+    }
+  }
+}
+
+setupEnemy();
+setupBackground();
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
