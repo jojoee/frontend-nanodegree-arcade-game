@@ -119,6 +119,15 @@ Gem.prototype.getRandomRenderPosition = function() {
   return this.getRenderPosition(col, row);
 };
 
+Gem.prototype.isCollision = function() {
+  if (player.pos.col === gem.pos.col &&
+    player.pos.row === gem.pos.row) {
+    return true;
+  }
+
+  return false;
+};
+
 /*================================================================
   #GAME OBJ - ENEMY
   ================================================================*/
@@ -170,6 +179,22 @@ Enemy.prototype.getRandomSpeed = function() {
   return getRandomInt(100, 240);
 };
 
+Enemy.prototype.isCollision = function () {
+  var enemyWidth = 101 / 2; // tricky
+
+  // if collide with enemy
+  if (player.pos.row === this.pos.row &&
+    (
+      (player.pos.x > this.pos.x && player.pos.x < this.pos.x + enemyWidth) || // player in front of enemy
+      (player.pos.x < this.pos.x && player.pos.x > this.pos.x - enemyWidth) // player behind enemy
+    )) {
+
+    return true;
+  }
+
+  return false;
+};
+
 /*================================================================
   #GAME OBJ - PLAYER
   ================================================================*/
@@ -185,8 +210,20 @@ var Player = function() {
 Player.prototype = Object.create(GameObject.prototype);
 
 Player.prototype.update = function() {
-  checkGemCollision();
-  checkEnemyCollision();
+  // check gem collision
+  if (gem.isCollision()) {
+    nGems++;
+    gem.reset();
+  }
+
+  // check enemy collision
+  for (i = 0; i < MAX_NUM_ENEMIES; i++) {
+    var enemy = enemies[i];
+    if (enemy.isCollision()) {
+      nDies++;
+      player.reset();
+    }
+  }
 };
 
 Player.prototype.getRenderPosition = function(col, row) {
@@ -246,35 +283,6 @@ Player.prototype.handleInput = function(key) {
       break;
   }
 };
-
-/*================================================================
-  #COLLISION
-  ================================================================*/
-
-function checkGemCollision() {
-  if (player.pos.col === gem.pos.col &&
-    player.pos.row === gem.pos.row) {
-    nGems++;
-    gem.reset();
-  }
-}
-
-function checkEnemyCollision() {
-  var enemyWidth = 101 / 2; // tricky
-  for (i = 0; i < MAX_NUM_ENEMIES; i++) {
-    var enemy = enemies[i];
-
-    // if collide with enemy
-    if (player.pos.row === enemy.pos.row &&
-      (
-        (player.pos.x > enemy.pos.x && player.pos.x < enemy.pos.x + enemyWidth) || // player in front of enemy
-        (player.pos.x < enemy.pos.x && player.pos.x > enemy.pos.x - enemyWidth) // player behind enemy
-      )) {
-      nDies++;
-      player.reset();
-    }
-  }
-}
 
 /*================================================================
   #START
