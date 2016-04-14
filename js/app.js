@@ -62,20 +62,32 @@ function getGameRenderPosition(objType, objCol, objRow, offsetX, offsetY) {
 }
 
 /*================================================================
+  #GAME OBJ
+  ================================================================*/
+
+// super class for every objects in the game
+var GameObject = function() {
+  this.sprite = '';
+  this.pos = {};
+};
+
+GameObject.prototype.render = function() {
+  ctx.drawImage(Resources.get(this.sprite),
+    this.pos.x,
+    this.pos.y
+  );
+};
+
+/*================================================================
   #GAME OBJ - BLOCK
   ================================================================*/
 
 var Block = function(imagePath, col, row) {
   this.sprite = imagePath;
   this.pos = this.getRenderPosition(col, row);
-}
-
-Block.prototype.render = function() {
-  ctx.drawImage(Resources.get(this.sprite),
-    this.pos.x,
-    this.pos.y
-  );
 };
+
+Block.prototype = Object.create(GameObject.prototype);
 
 Block.prototype.getRenderPosition = function(col, row) {
   return getGameRenderPosition('block', col, row, 0, 20);
@@ -90,12 +102,7 @@ var Gem = function() {
   this.pos = this.getRandomRenderPosition();
 };
 
-Gem.prototype.render = function() {
-  ctx.drawImage(Resources.get(this.sprite),
-    this.pos.x,
-    this.pos.y
-  );
-};
+Gem.prototype = Object.create(GameObject.prototype);
 
 Gem.prototype.reset = function() {
   this.pos = this.getRandomRenderPosition();
@@ -128,6 +135,8 @@ var Enemy = function() {
   this.speed = this.getRandomSpeed();
 };
 
+Enemy.prototype = Object.create(GameObject.prototype);
+
 // Update the enemy's position, required method for game
 // Parameter: dt, a time delta between ticks
 Enemy.prototype.update = function(dt) {
@@ -140,14 +149,6 @@ Enemy.prototype.update = function(dt) {
   if (this.pos.x >= CANVAS_WIDHT) {
     this.reset();
   }
-};
-
-// Draw the enemy on the screen, required method for game
-Enemy.prototype.render = function() {
-  ctx.drawImage(Resources.get(this.sprite),
-    this.pos.x,
-    this.pos.y
-  );
 };
 
 Enemy.prototype.reset = function() {
@@ -181,16 +182,11 @@ var Player = function() {
   this.pos = this.getStartedRenderPosition();
 };
 
+Player.prototype = Object.create(GameObject.prototype);
+
 Player.prototype.update = function() {
   checkGemCollision();
   checkEnemyCollision();
-};
-
-Player.prototype.render = function() {
-  ctx.drawImage(Resources.get(this.sprite),
-    this.pos.x,
-    this.pos.y
-  );
 };
 
 Player.prototype.getRenderPosition = function(col, row) {
