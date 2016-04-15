@@ -66,9 +66,9 @@ function getGameRenderPosition(objType, objCol, objRow, offsetX, offsetY) {
   ================================================================*/
 
 // super class for every objects in the game
-var GameObject = function() {
-  this.sprite = '';
-  this.pos = {};
+var GameObject = function(sprite, pos) {
+  this.sprite = sprite;
+  this.pos = pos;
 };
 
 GameObject.prototype.render = function() {
@@ -83,10 +83,13 @@ GameObject.prototype.render = function() {
   ================================================================*/
 
 var Block = function(imagePath, col, row) {
-  this.sprite = imagePath;
-  this.pos = this.getRenderPosition(col, row);
+  var sprite = imagePath,
+    pos = this.getRenderPosition(col, row);
+
+  GameObject.call(this, sprite, pos);
 };
 
+Block.prototype.constructor = GameObject;
 Block.prototype = Object.create(GameObject.prototype);
 
 Block.prototype.getRenderPosition = function(col, row) {
@@ -98,10 +101,13 @@ Block.prototype.getRenderPosition = function(col, row) {
   ================================================================*/
 
 var Gem = function() {
-  this.sprite = 'images/gem-blue.png';
-  this.pos = this.getRandomRenderPosition();
+  var sprite = 'images/gem-blue.png',
+    pos = this.getRandomRenderPosition();
+
+  GameObject.call(this, sprite, pos);
 };
 
+Gem.prototype.constructor = GameObject;
 Gem.prototype = Object.create(GameObject.prototype);
 
 Gem.prototype.reset = function() {
@@ -139,11 +145,14 @@ var Enemy = function() {
 
   // The image/sprite for our enemies, this uses
   // a helper we've provided to easily load images
-  this.sprite = 'images/enemy-bug.png';
-  this.pos = this.getRandomRenderPosition();
+  var sprite = 'images/enemy-bug.png',
+    pos = this.getRandomRenderPosition();
+
+  GameObject.call(this, sprite, pos);
   this.speed = this.getRandomSpeed();
 };
 
+Enemy.prototype.constructor = GameObject;
 Enemy.prototype = Object.create(GameObject.prototype);
 
 // Update the enemy's position, required method for game
@@ -203,10 +212,13 @@ Enemy.prototype.isCollision = function () {
 // This class requires an update(), render() and
 // a handleInput() method.
 var Player = function() {
-  this.sprite = 'images/char-boy.png';
-  this.pos = this.getStartedRenderPosition();
+  var sprite = 'images/char-boy.png',
+    pos = this.getStartedRenderPosition();
+
+  GameObject.call(this, sprite, pos);
 };
 
+Player.prototype.constructor = GameObject;
 Player.prototype = Object.create(GameObject.prototype);
 
 Player.prototype.update = function() {
