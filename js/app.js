@@ -126,8 +126,8 @@ Gem.prototype.getRandomRenderPosition = function() {
 };
 
 Gem.prototype.isCollision = function(obj) {
-  if (obj.pos.col === gem.pos.col &&
-    obj.pos.row === gem.pos.row) {
+  if (obj.pos.col === this.pos.col &&
+    obj.pos.row === this.pos.row) {
     return true;
   }
 
@@ -233,7 +233,7 @@ Player.prototype.update = function() {
     var enemy = enemies[i];
     if (enemy.isCollision(this)) {
       nDies++;
-      player.reset();
+      this.reset();
     }
   }
 };
