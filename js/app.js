@@ -125,9 +125,9 @@ Gem.prototype.getRandomRenderPosition = function() {
   return this.getRenderPosition(col, row);
 };
 
-Gem.prototype.isCollision = function() {
-  if (player.pos.col === gem.pos.col &&
-    player.pos.row === gem.pos.row) {
+Gem.prototype.isCollision = function(obj) {
+  if (obj.pos.col === gem.pos.col &&
+    obj.pos.row === gem.pos.row) {
     return true;
   }
 
@@ -188,14 +188,14 @@ Enemy.prototype.getRandomSpeed = function() {
   return getRandomInt(100, 240);
 };
 
-Enemy.prototype.isCollision = function () {
+Enemy.prototype.isCollision = function (obj) {
   var enemyWidth = 101 / 2; // tricky
 
   // if collide with enemy
-  if (player.pos.row === this.pos.row &&
+  if (obj.pos.row === this.pos.row &&
     (
-      (player.pos.x > this.pos.x && player.pos.x < this.pos.x + enemyWidth) || // player in front of enemy
-      (player.pos.x < this.pos.x && player.pos.x > this.pos.x - enemyWidth) // player behind enemy
+      (obj.pos.x > this.pos.x && obj.pos.x < this.pos.x + enemyWidth) || // obj in front of enemy
+      (obj.pos.x < this.pos.x && obj.pos.x > this.pos.x - enemyWidth) // obj behind enemy
     )) {
 
     return true;
@@ -223,7 +223,7 @@ Player.prototype = Object.create(GameObject.prototype);
 
 Player.prototype.update = function() {
   // check gem collision
-  if (gem.isCollision()) {
+  if (gem.isCollision(this)) {
     nGems++;
     gem.reset();
   }
@@ -231,7 +231,7 @@ Player.prototype.update = function() {
   // check enemy collision
   for (i = 0; i < MAX_NUM_ENEMIES; i++) {
     var enemy = enemies[i];
-    if (enemy.isCollision()) {
+    if (enemy.isCollision(this)) {
       nDies++;
       player.reset();
     }
