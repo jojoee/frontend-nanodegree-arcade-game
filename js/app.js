@@ -310,7 +310,7 @@ Player.prototype.handleInput = function(key) {
 var gem = new Gem(),
     player = new Player(),
     blocks = [], // 2d array
-    nemies = [];
+    enemies = [];
 
 function setupEnemy() {
   for (i = 0; i < MAX_NUM_ENEMIES; i++) {
