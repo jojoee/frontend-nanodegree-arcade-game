@@ -89,8 +89,8 @@ var Block = function(imagePath, col, row) {
   GameObject.call(this, sprite, pos);
 };
 
-Block.prototype.constructor = GameObject;
 Block.prototype = Object.create(GameObject.prototype);
+Block.prototype.constructor = Block;
 
 Block.prototype.getRenderPosition = function(col, row) {
   return getGameRenderPosition('block', col, row, 0, 20);
@@ -107,8 +107,8 @@ var Gem = function() {
   GameObject.call(this, sprite, pos);
 };
 
-Gem.prototype.constructor = GameObject;
 Gem.prototype = Object.create(GameObject.prototype);
+Gem.prototype.constructor = Gem;
 
 Gem.prototype.reset = function() {
   this.pos = this.getRandomRenderPosition();
@@ -152,8 +152,8 @@ var Enemy = function() {
   this.speed = this.getRandomSpeed();
 };
 
-Enemy.prototype.constructor = GameObject;
 Enemy.prototype = Object.create(GameObject.prototype);
+Enemy.prototype.constructor = Enemy;
 
 // Update the enemy's position, required method for game
 // Parameter: dt, a time delta between ticks
@@ -218,8 +218,8 @@ var Player = function() {
   GameObject.call(this, sprite, pos);
 };
 
-Player.prototype.constructor = GameObject;
 Player.prototype = Object.create(GameObject.prototype);
+Player.prototype.constructor = Player;
 
 Player.prototype.update = function() {
   // check gem collision
