@@ -17,3 +17,4 @@ frontend-nanodegree-arcade-game
 - [ ] Add DocBlock to every functions
 - [ ] Pause feature
 - [ ] Reset / New Game feature
+- [ ] Find a proper design pattern to implement `helper` function
