@@ -4,20 +4,20 @@
 
 // constant
 var BLOCK_WIDTH = 101,
-  BLOCK_HEIGHT = 83,
-  CANVAS_WIDHT = 505,
-  CANVAS_HEIGHT = 606,
-  NUM_COLS = 5,
-  NUM_ROWS = 6,
-  MAX_NUM_ENEMIES = 3;
+    BLOCK_HEIGHT = 83,
+    CANVAS_WIDHT = 505,
+    CANVAS_HEIGHT = 606,
+    NUM_COLS = 5,
+    NUM_ROWS = 6,
+    MAX_NUM_ENEMIES = 3;
 
 // global variable
 var score = 0,
-  nDies = 0,
-  nGems = 0;
+    nDies = 0,
+    nGems = 0;
 
 var i = 0,
-  j = 0;
+    j = 0;
 
 /*================================================================
   #UTILITY
@@ -84,7 +84,7 @@ GameObject.prototype.render = function() {
 
 var Block = function(imagePath, col, row) {
   var sprite = imagePath,
-    pos = this.getRenderPosition(col, row);
+      pos = this.getRenderPosition(col, row);
 
   GameObject.call(this, sprite, pos);
 };
@@ -102,7 +102,7 @@ Block.prototype.getRenderPosition = function(col, row) {
 
 var Gem = function() {
   var sprite = 'images/gem-blue.png',
-    pos = this.getRandomRenderPosition();
+      pos = this.getRandomRenderPosition();
 
   GameObject.call(this, sprite, pos);
 };
@@ -120,7 +120,7 @@ Gem.prototype.getRenderPosition = function(col, row) {
 
 Gem.prototype.getRandomRenderPosition = function() {
   var col = getRandomInt(0, 4),
-    row = getRandomInt(1, 3);
+      row = getRandomInt(1, 3);
 
   return this.getRenderPosition(col, row);
 };
@@ -146,7 +146,7 @@ var Enemy = function() {
   // The image/sprite for our enemies, this uses
   // a helper we've provided to easily load images
   var sprite = 'images/enemy-bug.png',
-    pos = this.getRandomRenderPosition();
+      pos = this.getRandomRenderPosition();
 
   GameObject.call(this, sprite, pos);
   this.speed = this.getRandomSpeed();
@@ -189,13 +189,17 @@ Enemy.prototype.getRandomSpeed = function() {
 };
 
 Enemy.prototype.isCollision = function (obj) {
-  var enemyWidth = 101 / 2; // tricky
+  // tricky
+  var enemyWidth = 101 / 2;
 
   // if collide with enemy
+  // - check the row
+  // - check when obj in front of enemy
+  // - check when obj behind enemy
   if (obj.pos.row === this.pos.row &&
     (
-      (obj.pos.x > this.pos.x && obj.pos.x < this.pos.x + enemyWidth) || // obj in front of enemy
-      (obj.pos.x < this.pos.x && obj.pos.x > this.pos.x - enemyWidth) // obj behind enemy
+      (obj.pos.x > this.pos.x && obj.pos.x < this.pos.x + enemyWidth) ||
+      (obj.pos.x < this.pos.x && obj.pos.x > this.pos.x - enemyWidth)
     )) {
 
     return true;
@@ -213,7 +217,7 @@ Enemy.prototype.isCollision = function (obj) {
 // a handleInput() method.
 var Player = function() {
   var sprite = 'images/char-boy.png',
-    pos = this.getStartedRenderPosition();
+      pos = this.getStartedRenderPosition();
 
   GameObject.call(this, sprite, pos);
 };
@@ -244,7 +248,7 @@ Player.prototype.getRenderPosition = function(col, row) {
 
 Player.prototype.getStartedRenderPosition = function() {
   var col = 2,
-    row = 5;
+      row = 5;
 
   return this.getRenderPosition(col, row, 0, 0);
 };
@@ -303,10 +307,10 @@ Player.prototype.handleInput = function(key) {
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
-var gem = new Gem();
-var player = new Player();
-var blocks = []; // 2d array
-var enemies = [];
+var gem = new Gem(),
+    player = new Player(),
+    blocks = [], // 2d array
+    nemies = [];
 
 function setupEnemy() {
   for (i = 0; i < MAX_NUM_ENEMIES; i++) {
