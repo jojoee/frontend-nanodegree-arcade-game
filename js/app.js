@@ -20,48 +20,6 @@ var i = 0,
     j = 0;
 
 /*================================================================
-  #UTILITY
-  ================================================================*/
-
-/**
- * Returns a random integer between min (inclusive) and max (inclusive)
- * Using Math.round() will give you a non-uniform distribution!
- *
- * @see http://stackoverflow.com/questions/1527803/generating-random-numbers-in-javascript-in-a-specific-range
- * 
- * @param  {number} min
- * @param  {number} max
- * @return {number}
- */
-function getRandomInt(min, max) {
-  return Math.floor(Math.random() * (max - min + 1)) + min;
-}
-
-/**
- * [getColByXPos description]
- * 
- * @param  {number} xPos
- * @return {number}
- */
-function getColByXPos(xPos) {
-  return Math.floor(xPos / BLOCK_WIDTH) + 1;
-}
-
-/**
- * Game Position class for returning
- * position object (in 2d)
- */
-function getGameRenderPosition(objType, objCol, objRow, offsetX, offsetY) {
-  return {
-    type: objType,
-    col: objCol,
-    row: objRow,
-    x: objCol * BLOCK_WIDTH + offsetX,
-    y: objRow * BLOCK_HEIGHT + offsetY
-  };
-}
-
-/*================================================================
   #GAME OBJ
   ================================================================*/
 
@@ -76,6 +34,44 @@ GameObject.prototype.render = function() {
     this.pos.x,
     this.pos.y
   );
+};
+
+/**
+ * Returns a random integer between min (inclusive) and max (inclusive)
+ * Using Math.round() will give you a non-uniform distribution!
+ *
+ * @see http://stackoverflow.com/questions/1527803/generating-random-numbers-in-javascript-in-a-specific-range
+ * 
+ * @param  {number} min
+ * @param  {number} max
+ * @return {number}
+ */
+GameObject.prototype.getRandomInt = function(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+};
+
+/**
+ * [getColByXPos description]
+ * 
+ * @param  {number} xPos
+ * @return {number}
+ */
+GameObject.prototype.getColByXPos = function(xPos) {
+  return Math.floor(xPos / BLOCK_WIDTH) + 1;
+};
+
+/**
+ * Game Position class for returning
+ * position object (in 2d)
+ */
+GameObject.prototype.getGameRenderPosition = function(objType, objCol, objRow, offsetX, offsetY) {
+  return {
+    type: objType,
+    col: objCol,
+    row: objRow,
+    x: objCol * BLOCK_WIDTH + offsetX,
+    y: objRow * BLOCK_HEIGHT + offsetY
+  };
 };
 
 /*================================================================
@@ -93,7 +89,7 @@ Block.prototype = Object.create(GameObject.prototype);
 Block.prototype.constructor = Block;
 
 Block.prototype.getRenderPosition = function(col, row) {
-  return getGameRenderPosition('block', col, row, 0, 20);
+  return this.getGameRenderPosition('block', col, row, 0, 20);
 };
 
 /*================================================================
@@ -115,12 +111,12 @@ Gem.prototype.reset = function() {
 };
 
 Gem.prototype.getRenderPosition = function(col, row) {
-  return getGameRenderPosition('gem', col, row, 0, 0);
+  return this.getGameRenderPosition('gem', col, row, 0, 0);
 };
 
 Gem.prototype.getRandomRenderPosition = function() {
-  var col = getRandomInt(0, 4),
-      row = getRandomInt(1, 3);
+  var col = this.getRandomInt(0, 4),
+      row = this.getRandomInt(1, 3);
 
   return this.getRenderPosition(col, row);
 };
@@ -162,7 +158,7 @@ Enemy.prototype.update = function(dt) {
   // which will ensure the game runs at the same speed for
   // all computers.
   this.pos.x += this.speed * dt;
-  this.pos.col = getColByXPos(this.pos.x);
+  this.pos.col = this.getColByXPos(this.pos.x);
 
   if (this.pos.x >= CANVAS_WIDHT) {
     this.reset();
@@ -175,17 +171,17 @@ Enemy.prototype.reset = function() {
 };
 
 Enemy.prototype.getRenderPosition = function(row) {
-  return getGameRenderPosition('enemy', 0, row, -BLOCK_WIDTH * 2, 0);
+  return this.getGameRenderPosition('enemy', 0, row, -BLOCK_WIDTH * 2, 0);
 };
 
 Enemy.prototype.getRandomRenderPosition = function() {
-  var row = getRandomInt(1, 3);
+  var row = this.getRandomInt(1, 3);
 
   return this.getRenderPosition(row);
 };
 
 Enemy.prototype.getRandomSpeed = function() {
-  return getRandomInt(100, 240);
+  return this.getRandomInt(100, 240);
 };
 
 Enemy.prototype.isCollision = function (obj) {
@@ -243,7 +239,7 @@ Player.prototype.update = function() {
 };
 
 Player.prototype.getRenderPosition = function(col, row) {
-  return getGameRenderPosition('player', col, row, 0, 0);
+  return this.getGameRenderPosition('player', col, row, 0, 0);
 };
 
 Player.prototype.getStartedRenderPosition = function() {
